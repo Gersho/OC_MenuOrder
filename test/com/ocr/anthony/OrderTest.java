@@ -223,4 +223,41 @@ public class OrderTest {
         assertEquals("Vous avez choisi comme boisson : soda", output[18]);
     }
 
+    @Test
+    public void Given_BadResponseAndResponse1_When_AskAboutCarWithThreeResponses_Then_DisplayErrorAndGoodResponse() {
+        System.setIn(new ByteArrayInputStream("5\n1\n".getBytes()));
+        order = new Order();
+        String[] responses = {"BMW", "Audi", "Mercedes"};
+        order.askSomething("voiture", responses);
+        String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals(true, output[0].contains("voiture"));
+        assertEquals("Vous n'avez pas choisi de voiture parmi les choix proposés", output[5]);
+        assertEquals("Vous avez choisi comme voiture : BMW", output[6]);
+    }
+
+
+    @Test
+    public void Given_Chiken_When_AskAboutMenus_Then_DisplayChikenChoice() {
+        System.setIn(new ByteArrayInputStream("1\n".getBytes()));
+        order = new Order();
+        order.askMenu();
+        String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals("Vous avez choisi comme menu : poulet", output[5]);
+    }
+    @Test
+    public void Given_FriesWithAllSidesEnabled_When_AskAboutSides_Then_DisplayFriesChoice() {
+        System.setIn(new ByteArrayInputStream("2\n".getBytes()));
+        order = new Order();
+        order.askSide(true);
+        String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals("Vous avez choisi comme accompagnement : frites", output[5]);
+    }
+    @Test
+    public void Given_Water_When_AskAboutDrinks_Then_DisplayWaterChoice() {
+        System.setIn(new ByteArrayInputStream("1\n".getBytes()));
+        order = new Order();
+        order.askDrink();
+        String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals("Vous avez choisi comme boisson : eau plate", output[5]);
+    }
 }

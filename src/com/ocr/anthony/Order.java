@@ -42,7 +42,7 @@ public class Order {
     /**
      * Run the menu display
      */
-    public void runMenu(){
+    public void runMenu() {
         this.displayAvailableMenu();
         int nbMenu;
         do {
@@ -50,37 +50,15 @@ public class Order {
             this.displaySelectedMenu(nbMenu);
             switch (nbMenu) {
                 case 1:
-                    int nbSide;
-                    displayAvailableSide(true);
-                    do {
-                        nbSide = sc.nextInt();
-                        displaySelectedSide(nbSide, true);
-                    }while(nbSide < 1 || nbSide > 3);
-                    int nbDrink;
-                    displayAvailableDrink();
-                    do {
-                        nbDrink = sc.nextInt();
-                        displaySelectedDrink(nbDrink);
-                    }while(nbDrink < 1 || nbDrink > 3);
+                    askSide(true);
+                    askDrink();
                     break;
                 case 2:
-                    displayAvailableSide(true);
-                    do {
-                        nbSide = sc.nextInt();
-                        displaySelectedSide(nbSide, true);
-                    }while(nbSide < 1 || nbSide > 3);
+                    askSide(true);
                     break;
                 case 3:
-                    displayAvailableSide(false);
-                    do {
-                        nbSide = sc.nextInt();
-                        displaySelectedSide(nbSide, false);
-                    }while(nbSide < 1 || nbSide > 2);
-                    displayAvailableDrink();
-                    do {
-                        nbDrink = sc.nextInt();
-                        displaySelectedDrink(nbDrink);
-                    }while (nbDrink < 1 || nbDrink > 3);
+                    askSide(false);
+                    askDrink();
                     break;
             }
         } while (nbMenu < 1 || nbMenu > 3);
@@ -186,5 +164,54 @@ public class Order {
         for (int i = 0; i < menus; i++) {
             runMenu();
         }
+    }
+
+    public void askSomething(String sujet, String[] responses) {
+
+        System.out.println("Choix "+sujet);
+        for (int i=0;i<responses.length;i++){
+            System.out.println(i+" "+responses[i]);
+        }
+
+        System.out.println("Quel " + sujet + " choissisez vous ?");
+        int answer;
+        do{
+            answer = sc.nextInt();
+            if (answer < 1 || answer > responses.length){
+
+                boolean isVowel = "aeiouy".contains(Character.toString(sujet.charAt(0)));
+                if (isVowel) {
+                    System.out.println("Vous n'avez pas choisi d'" + sujet + " parmi les choix proposés");
+                } else {
+                    System.out.println("Vous n'avez pas choisi de " + sujet + " parmi les choix proposés");
+                }
+            }else{
+                System.out.println("Vous avez choisi comme "+sujet+" : "+responses[answer-1]);
+            }
+        }while(answer < 1 || answer > responses.length);
+
+    }
+
+    public void askMenu() {
+        String menus[] = {"poulet","boeuf","végétarien"};
+        askSomething("menu",menus);
+    }
+
+
+
+    public void askSide(boolean allSidesEnable) {
+        if(allSidesEnable){
+            String sideDishes[] = {"légumes frais","frites","riz"};
+            askSomething("accompagnement",sideDishes);
+        }else{
+            String sideDishes[] = {"riz","pas de riz"};
+            askSomething("accompagnement",sideDishes);
+        }
+
+    }
+
+    public void askDrink() {
+        String drinks[] = {"eau plate","eau gazeuse","soda"};
+        askSomething("boisson",drinks);
     }
 }
