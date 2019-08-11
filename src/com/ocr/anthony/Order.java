@@ -172,7 +172,7 @@ public class Order {
 
         System.out.println("Choix "+sujet);
         for (int i=0;i<responses.length;i++){
-            System.out.println(i+" "+responses[i]);
+            System.out.println((i+1)+" "+responses[i]);
         }
 
         System.out.println("Que souhaitez-vous comme " + sujet + "?");
