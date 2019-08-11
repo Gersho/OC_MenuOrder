@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Order {
     Scanner sc = new Scanner(System.in);
+    String orderSummary = "";
 
 
     /**
@@ -43,25 +44,22 @@ public class Order {
      * Run the menu display
      */
     public void runMenu() {
-        this.displayAvailableMenu();
-        int nbMenu;
-        do {
-            nbMenu = sc.nextInt();
-            this.displaySelectedMenu(nbMenu);
-            switch (nbMenu) {
-                case 1:
-                    askSide(true);
-                    askDrink();
-                    break;
-                case 2:
-                    askSide(true);
-                    break;
-                case 3:
-                    askSide(false);
-                    askDrink();
-                    break;
-            }
-        } while (nbMenu < 1 || nbMenu > 3);
+        int nbMenu = askMenu();
+
+        switch (nbMenu) {
+            case 1:
+                askSide(true);
+                askDrink();
+                break;
+            case 2:
+                askSide(true);
+                break;
+            case 3:
+                askSide(false);
+                askDrink();
+                break;
+        }
+
     }
 
     /**
@@ -160,20 +158,24 @@ public class Order {
 
     public void runMenus() {
         System.out.println("Combien de menus desirez vous commander ?");
+        orderSummary = "Résumé de votre commande :%n";
         int menus = sc.nextInt();
         for (int i = 0; i < menus; i++) {
+            orderSummary += "Menu "+(i+1)+":%n";
             runMenu();
         }
+        System.out.println("");
+        System.out.println(String.format(orderSummary));
     }
 
-    public void askSomething(String sujet, String[] responses) {
+    public int askSomething(String sujet, String[] responses) {
 
         System.out.println("Choix "+sujet);
         for (int i=0;i<responses.length;i++){
             System.out.println(i+" "+responses[i]);
         }
 
-        System.out.println("Quel " + sujet + " choissisez vous ?");
+        System.out.println("Que souhaitez-vous comme " + sujet + "?");
         int answer;
         do{
             answer = sc.nextInt();
@@ -187,14 +189,18 @@ public class Order {
                 }
             }else{
                 System.out.println("Vous avez choisi comme "+sujet+" : "+responses[answer-1]);
+                String choice = "Vous avez choisi comme " + sujet + " : " + responses[answer - 1];
+                orderSummary += choice + "%n";
             }
         }while(answer < 1 || answer > responses.length);
 
+        return answer;
     }
 
-    public void askMenu() {
+    public int askMenu() {
         String menus[] = {"poulet","boeuf","végétarien"};
-        askSomething("menu",menus);
+        int answer = askSomething("menu",menus);
+        return answer;
     }
 
 
