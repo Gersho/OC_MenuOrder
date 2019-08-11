@@ -1,5 +1,6 @@
 package com.ocr.anthony;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Order {
@@ -159,7 +160,18 @@ public class Order {
     public void runMenus() {
         System.out.println("Combien de menus desirez vous commander ?");
         orderSummary = "Résumé de votre commande :%n";
-        int menus = sc.nextInt();
+        int menus = -1;
+        boolean isvalidAnswer;
+        do {
+            try {
+                menus = sc.nextInt();
+                isvalidAnswer = true;
+            } catch (InputMismatchException e) {
+                sc.next();
+                isvalidAnswer = false;
+                System.out.println("Vous devez saisir un nombre, correspondant au nombre de menus souhaités");
+            }
+        }while(!isvalidAnswer);
         for (int i = 0; i < menus; i++) {
             orderSummary += "Menu "+(i+1)+":%n";
             runMenu();
@@ -176,10 +188,18 @@ public class Order {
         }
 
         System.out.println("Que souhaitez-vous comme " + sujet + "?");
-        int answer;
+        int answer = -1;
+        boolean isValidAnswer;
+
         do{
-            answer = sc.nextInt();
-            if (answer < 1 || answer > responses.length){
+            try {
+                answer = sc.nextInt();
+                isValidAnswer = !(answer < 1 || (answer > responses.length));
+            } catch (InputMismatchException e){
+                sc.next();
+                isValidAnswer = false;
+            }
+            if (!isValidAnswer){
 
                 boolean isVowel = "aeiouy".contains(Character.toString(sujet.charAt(0)));
                 if (isVowel) {
@@ -192,7 +212,7 @@ public class Order {
                 String choice = "Vous avez choisi comme " + sujet + " : " + responses[answer - 1];
                 orderSummary += choice + "%n";
             }
-        }while(answer < 1 || answer > responses.length);
+        }while(!isValidAnswer);
 
         return answer;
     }

@@ -299,4 +299,22 @@ public class OrderTest {
                 "Vous avez choisi comme menu : boeuf%n" +
                 "Vous avez choisi comme accompagnement : frites%n" , order.orderSummary);
     }
+
+    @Test
+    public void Given_TextResponse_When_CallingAskQuestion_Then_DisplayErrorSentence() {
+        System.setIn(new ByteArrayInputStream(String.format("texte%n1%n").getBytes()));
+        order = new Order();
+        String[] responses = {"BMW", "Audi", "Mercedes"};
+        order.askSomething("voiture", responses);
+        String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals("Vous n'avez pas choisi de voiture parmi les choix proposés", output[5]);
+    }
+    @Test
+    public void Given_BadMenusQuantityInStandardInput_When_MenusIsRun_Then_DisplayErrorSentence() {
+        System.setIn(new ByteArrayInputStream(String.format("texte%n1%n1%n2%n3%n").getBytes()));
+        order = new Order();
+        order.runMenus();
+        String[] output = outContent.toString().replace("\r\n", "\n").split("\n");
+        assertEquals("Vous devez saisir un nombre, correspondant au nombre de menus souhaités", output[1]);
+    }
 }
